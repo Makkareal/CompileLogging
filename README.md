@@ -6,7 +6,7 @@
 # How to use:
 Create a Docker Image from the docker file:
 ```shell
-  docker build -t Docker-Image-Name
+  docker build -t docker-image-name
 ```
 *(This command is deprecated, and maybe removed in the future)*
 
@@ -14,12 +14,12 @@ Create a Docker Image from the docker file:
 **Start a docker in your workdirectory using:**
 ```shell
 docker run --rm -it \
---name "comp-docker"\
+--name "comp-docker" \
 --memory="4g" \
---memory-swap="8g"\
--v "$(pwd)":/your/work/directory/\
--w /your/work/directory/\
-Docker-Image-Name
+--memory-swap="8g" \
+-v "$(pwd)":/your/work/directory/ \
+-w /your/work/directory/ \
+docker-image-name
 ```
 --name <- The name of the docker, used by the script to find the docker\
 --memory <- this sets the amount of memory the docker can use\
