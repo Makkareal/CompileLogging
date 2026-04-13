@@ -2,8 +2,25 @@
 
 ## Only works if compiling with ninja!
 
+# Vram swap setup using vramfs:
 
-# How to use:
+Create a folder for vram mount
+Use the vramfs binary:
+```shell
+sudo ./path/vramfs/bin/vramfs /path/to/folder SizeOfMount -f
+```
+
+Once vramfs succesfully mounted createa a swap to it:
+```shell
+sudo dd if=/dev/zero of=/path/to/folder/swapfile bs=1M count=SIZE
+sudo chmod 0600 /path/to/folder/swapfile
+sudo mkswap /path/to/folder/swapfile
+sudo losetup /dev/loop0 /path/to/folder/swapfile/swapfile
+sudo swapon /dev/loop0
+```
+
+
+# How to use Single log:
 Create a Docker Image from the docker file:
 ```shell
   docker build -t docker-image-name
@@ -29,3 +46,9 @@ docker-image-name
 **Start up the logging script, input parameters are the 2 files for saving.**
 
 **Start your compile in the docker like you would on console.**
+
+# How to Use Multi Log:
+**Multilog and sublog need to be in the same folder**
+Edit multilog.sh with desired path, build environment and docker.
+
+Run multilog.sh with the parametrs in Configuration or set defaults inside of the file.
