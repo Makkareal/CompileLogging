@@ -14,7 +14,7 @@ for i in $(seq $count); do
     --memory-swap="$MEMORY_SWAP"\
     -v /path/to/llvm:/path/to/llvm \
     -w path/to/build/folder \
-    llvm-arch-builder
+    DOCKER-IMAGE
     )
   DOCKER_NAME=$(docker inspect --format="{{.Name}}" $DOCKER_ID)
     docker exec $DOCKER_NAME rm ./bin/binary-to-remove
