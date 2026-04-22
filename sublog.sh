@@ -10,6 +10,9 @@ cleanup() {
     [[ -n $MONITOR_PID ]] && kill $MONITOR_PID 2>/dev/null
     [[ -n $LOG_PID ]] && kill $LOG_PID 2>/dev/null
     pkill -P $$ 2>/dev/null
+    echo "" >>$STATS_FILE
+    echo "" >>$STATS_FILE
+    echo "" >>$STATS_FILE
     echo -e "\n[Monitor] Cleanup finished"
     exit
 }
@@ -36,7 +39,7 @@ echo "Ninja detected (PID: $NINJA_PID). Monitoring..."
 START_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
 
-echo "Timestamp,RAM_Usage,Swap_Usage,CPU_Perc" >> "$STATS_FILE"
+echo "Timestamp,;AM_Usage;ram%;Swap_Usage;swap%;CPU_Perc" > "$STATS_FILE"
 (
     while docker exec "$CONTAINER_NAME" ps -p "$NINJA_PID" > /dev/null 2>&1; do
         RAM_B=$(docker exec "$CONTAINER_NAME" cat /sys/fs/cgroup/memory.current 2>/dev/null)
@@ -51,7 +54,7 @@ echo "Timestamp,RAM_Usage,Swap_Usage,CPU_Perc" >> "$STATS_FILE"
         SWP_PERC=$(echo "scale=2; ($SWP_B / $SWP_MAX) * 100" | bc)
         CPU=$(docker stats --no-stream --format "{{.CPUPerc}}" "$CONTAINER_NAME")
 
-        echo "$(date '+%H:%M:%S'),$((RAM_B/1048576))MiB ($RAM_PERC%),$((SWP_B/1048576))MiB ($SWP_PERC%),$CPU" >> "$STATS_FILE"
+        echo "$(date '+%H:%M:%S');$((RAM_B/1048576));$RAM_PERC;$((SWP_B/1048576));$SWP_PERC;$CPU" >> "$STATS_FILE"
         sleep 1
     done
 ) &
