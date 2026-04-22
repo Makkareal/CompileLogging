@@ -52,3 +52,7 @@ docker-image-name
 Edit multilog.sh with desired path, build environment and docker.
 
 Run multilog.sh with the parametrs in Configuration or set defaults inside of the file.
+
+# Analyzer use:
+Give path to your logging directory.
+Write true to generate graphs
