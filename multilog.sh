@@ -14,16 +14,17 @@ echo "./Folder/$i-log";
   docker run -i -d\
     --memory="$MEMORY"\
     --memory-swap="$MEMORY_SWAP"\
-    -v /path/to/llvm:/path/to/llvm \
-    -w path/to/build/folder \
-    llvm-arch-builder
+    -v /path/to/llvm/:/path/to/llvm/ \
+    -w /path/to/llvm/builddir \
+    docker-image-name
     )
   DOCKER_NAME=$(docker inspect --format="{{.Name}}" $DOCKER_ID)
-    docker exec $DOCKER_NAME rm ./bin/binary-to-remove
+    docker exec $DOCKER_NAME rm ./bin/clang-tidy
     echo "Removed binary"
     ./sublog.sh $DOCKER_NAME "./$Folder/$i-stats" &
     echo "Logger started"
-    docker exec $DOCKER_NAME ninja what-to-build >> "$LOG_FILE"
+    echo "" > "./$Folder/$i-log"
+    docker exec $DOCKER_NAME ninja -v clang-tidy >> "./$Folder/$i-log"
     echo "linking finished"
     docker stop $DOCKER_NAME >> /dev/null
     docker rm $DOCKER_NAME >> /dev/null
