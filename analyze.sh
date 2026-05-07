@@ -1,4 +1,5 @@
 #!/bin/bash
+# Check if directory is provided
 
 SEARCH_DIR="${1:-folder}"
 GENERATE_GRAPHS="${2:-false}"
@@ -11,9 +12,9 @@ for stats_file in "$SEARCH_DIR"/[0-9]*-stats; do
     log_file="${stats_file%-stats}-log"
     if [ -f "$log_file" ]; then
         # If the run was not failed include in statistics
-        if ! grep -qi "failed" "$log_file"; then
+        if ! grep -qi "compilation terminated." "$log_file"; then
 
-            # Calculate duration
+            # Calc duration
             duration=$(awk -F';' '
                 NR > 1 && $1 ~ /^[0-9]{2}:[0-9]{2}:[0-9]{2}$/ {
                     split($1, a, ":")
